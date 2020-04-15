@@ -28,7 +28,14 @@ public class Questions {
 	 * multChar("Hi-There") → "HHHiii---TTThhheeerrreee"
 	 */
 	public String multiChar(String input) {
-		return "";
+		String s = "";
+		for (int i = 0; i < input.length(); i++) {
+			for (int j = 0; j < 3; j++) {
+				s = s + input.substring(i, i + 1);
+			}
+		}
+
+		return s;
 	}
 
 	/**
@@ -45,7 +52,24 @@ public class Questions {
 	 */
 
 	public String sandwichFilling(String sandwich) {
-		return "";
+		int start = -1;
+		int end = -1;
+		sandwich = sandwich.toLowerCase();
+		for (int i = 0; i < sandwich.length() - 4; i++) {
+			String section = sandwich.substring(i, i + 5);
+			if (start == -1 && section.equals("bread")) {
+				start = i + 5;
+				i += 4;
+				continue;
+			} else if (start != -1 && end == -1 && section.equals("bread")) {
+				end = i;
+				break;
+			}
+		}
+		if (end == -1) {
+			return "";
+		}
+		return new StringBuilder(sandwich.substring(start, end)).reverse().toString();
 	}
 
 	/**
@@ -61,10 +85,18 @@ public class Questions {
 	 * evenlySpaced(4, 60, 9) → false
 	 */
 	public boolean evenlySpaced(int a, int b, int c) {
-		if (b - c == a - b) {
-			return true;
+		if (a > b && b > c) {
+			return a - b == b - c;
+		} else if (a > c && c > b) {
+			return a - c == c - b;
+		} else if (b > a && a > c) {
+			return b - a == a - c;
+		} else if (b > c && c > a) {
+			return b - c == c - a;
+		} else if (c > b && b > a) {
+			return c - b == b - a;
 		} else {
-			return false;
+			return c - a == a - b;
 		}
 
 	}
@@ -81,7 +113,9 @@ public class Questions {
 	 * nMid("Chocolate", 1) → "Choclate"<br>
 	 */
 	public String nMid(String input, int n) {
-		return "";
+		int startMid = (input.length() / 2) - (n / 2);
+		int endMid = (input.length() / 2) + (n / 2) + 1;
+		return input.substring(0, startMid) + input.substring(endMid);
 	}
 
 	/**
@@ -97,7 +131,7 @@ public class Questions {
 	 * endsJava("pythoniscool") → false <br>
 	 */
 	public boolean endsJava(String input) {
-		return false;
+		return input.toLowerCase().endsWith("java");
 	}
 
 	/**
@@ -112,7 +146,31 @@ public class Questions {
 	 * HINT: "a" == "a" if false HINT: "a".equals("a") is true
 	 */
 	public int superBlock(String input) {
-		return -1;
+		if (input.equals("")) {
+			return 0;
+		}
+		int max = -1;
+		String lastLetter = "";
+		int temp = 1;
+		for (int i = 0; i < input.length(); i++) {
+			String letter = input.substring(i, i + 1);
+			if (lastLetter.equals(letter)) {
+				temp++;
+			} else {
+				if (temp > max) {
+					max = temp;
+				}
+				temp = 1;
+			}
+			if (i == input.length() - 1) {
+				if (temp > max) {
+					max = temp;
+				}
+				temp = 1;
+			}
+			lastLetter = letter;
+		}
+		return max;
 	}
 
 	/**
@@ -128,7 +186,20 @@ public class Questions {
 	 * HINT: String.toLowerCase
 	 */
 	public int amISearch(String sentence) {
-		return -1;
+		int count = 0;
+		if (sentence.substring(0, 3).toLowerCase().equals("am ")) {
+			count++;
+		}
+		if (sentence.substring(sentence.length() - 3).toLowerCase().equals(" am")) {
+			count++;
+		}
+		for (int i = 0; i < sentence.length() - 3; i++) {
+			if (sentence.substring(i, i + 4).toLowerCase().equals(" am ")) {
+				count++;
+			}
+		}
+		System.out.println("***************" + count);
+		return count;
 	}
 
 	/**
@@ -143,14 +214,14 @@ public class Questions {
 	 * fizzBuzz(8) → null
 	 */
 	public String fizzBuzz(int number) {
-		if (number % 3 == 0) {
-			return "fizz";
+		if (number % 15 == 0) {
+			return "fizzbuzz";
 		} else if (number % 5 == 0) {
 			return "buzz";
-		} else if (number % 15 == 0) {
-			return "fizzbuzz";
+		} else if (number % 3 == 0) {
+			return "fizz";
 		} else {
-			return "";
+			return null;
 		}
 		
 		
@@ -178,7 +249,19 @@ public class Questions {
 	 */
 
 	public int largest(String input) {
-		return -1;
+		String[] nums = input.split(" ");
+		int max = 0;
+		for (String num : nums) {
+			int temp = 0;
+			for (int i = 0; i < num.length(); i++) {
+				String number = num.substring(i, i + 1);
+				temp += Integer.parseInt(number);
+			}
+			if (temp > max) {
+				max = temp;
+			}
+		}
+		return max;
 	}
 
 	/**
@@ -195,6 +278,9 @@ public class Questions {
 	 * HINT: String.charAt
 	 */
 	public boolean compares(String word, int index, char letter) {
-		return false;
+		if (index > word.length()) {
+			return false;
+		}
+		return word.charAt(index - 1) == letter;
 	}
 }
